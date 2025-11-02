@@ -50,3 +50,9 @@ Closes all OpenCV-created windows.
 - Checking isTrue before displaying frames prevents errors when reaching the end of the file.
 - For real-time video processing, this pattern (read -> process -> display -> wait) is the standard loop structure.
 - After calling capture.release(), OpenCV releases the video memory; always pair with cv.destroyAllWindows() to fully close windows.
+
+### How to Upload Files to GitHub Using VS Code Terminal
+git add .
+(git add <specific file>)
+git commit -m "update: added GitHub upload guide"
+git push
