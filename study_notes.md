@@ -122,4 +122,26 @@ Key	Action
     e	Display Eroded Image  
     r	Display Resized Image  
     x	Display Cropped Image  
-    0 / ESC	Exit Program  
+    0 / ESC	Exit Program
+
+  -------------------
+
+**File: contours.py
+** Date: 2025-11-11  
+** Topic: Detecting and Visualizing Contours in OpenCV  
+
+### 1. Overview  
+This script demonstrates how to detect and visualize object contours using OpenCV. Contours represent continuous curves that connect points with the same intensity, making them useful for shape detection, segmentation, and boundary analysis.  
+The code reads an image of cats, processes it through muliple stages, and finally draws contours on a blank canvas.  
+This version also includes stepwise section comments and minor improvements for clarity.  
+
+### 2. Code Summary  
+Main Steps  
+**1. Load Image**
+img = cv.imread('../Resources/Photos/cats.jpg')
+cv.imshow('Cats', img)
+Loads and displays the original image.
+**2. Create Blank Canvas**  
+blank = np.zeros(imag.shape, dtype='uint8')  
+cv.imshow('Blank', blank)  
+A blank image with the same dimensions as the original - used later for drawing contours separately.  
