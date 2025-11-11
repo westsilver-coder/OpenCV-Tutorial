@@ -2,8 +2,8 @@
 
 ## Section #1 - Basics
 
-**File: 'read.py'**
-**Date: 2025-10-28**
+**File: 'read.py'**  
+**Date: 2025-10-28**  
 **Topic: Image and Video Reading in OpenCV**
 
 ### 1. Overview
@@ -57,10 +57,11 @@ git add .
 git commit -m "update: added GitHub upload guide"  
 git push  
 
+-------------------------------------------
 
-**File: 'basic_functions.py'**
-**Date: 2025-11-11**
-**Topic: Basic Image Processing Funtions in OpenCV**
+**File: 'basic_functions.py'**  
+**Date: 2025-11-11**  
+**Topic: Basic Image Processing Funtions in OpenCV**  
 
 ### 1. Overview
 This script demonstrates fundamental image processing techniques using OpenCV. It loads an image and applies several basic transformations such as grayscale conversion, blurring, edge detection, dilation, erosion, resizing, and cropping. It also introduces an interactive viewer that lets users display specific results by pressing keys on the keyboard.
