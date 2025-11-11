@@ -57,9 +57,10 @@ git add .
 git commit -m "update: added GitHub upload guide"  
 git push  
 
+-------------------------------------------
 
-**File: 'basic_functions.py'**  
-**Date: 2025-11-11**  
+**File: 'basic_functions.py'**
+**Date: 2025-11-11**
 **Topic: Basic Image Processing Funtions in OpenCV**
 
 ### 1. Overview
