@@ -42,7 +42,7 @@ Frees video capture resources.
 - cv.destroyAllWindows()  
 Closes all OpenCV-created windows.  
 
-### 4. Common Issues & 
+### 4. Common Issues & Fixes  
 - Program freezes: Always include cv.waitKey() inside loops. It keeps the window responsive.
 
 ### 5. Notes & Insights
@@ -114,15 +114,15 @@ Do you want to display the image? (Y/N)
     - Any other input leads to "Invalid input. Please restart and enter Y or N."  
 - Key-to-Image Mapping
 Key	Action  
-    p	Display Original Image  
-    g	Display Grayscale Image  
-    b	Display Blurred Image  
-    c	Display Canny Edges  
-    d	Display Dilated Image  
-    e	Display Eroded Image  
-    r	Display Resized Image  
-    x	Display Cropped Image  
-    0 / ESC	Exit Program
+    p:	Display Original Image  
+    g:	Display Grayscale Image  
+    b:	Display Blurred Image  
+    c:	Display Canny Edges  
+    d:	Display Dilated Image  
+    e:	Display Eroded Image  
+    r:	Display Resized Image  
+    x:	Display Cropped Image  
+    0 / ESC:  Exit Program
 
   -------------------
 
