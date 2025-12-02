@@ -126,9 +126,9 @@ Key	Action
 
   -------------------
 
-**File: contours.py
-** Date: 2025-11-11  
-** Topic: Detecting and Visualizing Contours in OpenCV  
+**File: contours.py**  
+** Date: 2025-11-11**  
+** Topic: Detecting and Visualizing Contours in OpenCV**  
 
 ### 1. Overview  
 This script demonstrates how to detect and visualize object contours using OpenCV. Contours represent continuous curves that connect points with the same intensity, making them useful for shape detection, segmentation, and boundary analysis.  
@@ -136,12 +136,75 @@ The code reads an image of cats, processes it through muliple stages, and finall
 This version also includes stepwise section comments and minor improvements for clarity.  
 
 ### 2. Code Summary  
-Main Steps  
-**1. Load Image**
+**-  Load Image**
 img = cv.imread('../Resources/Photos/cats.jpg')
 cv.imshow('Cats', img)
 Loads and displays the original image.
-**2. Create Blank Canvas**  
+**-  Create Blank Canvas**  
 blank = np.zeros(imag.shape, dtype='uint8')  
 cv.imshow('Blank', blank)  
 A blank image with the same dimensions as the original - used later for drawing contours separately.  
+**-  Convert to Grayscale**  
+gray = cv.cvtColor(img, cv.COLOR_BGR2RGRAY)  
+cv.imshow('Gray', gray)  
+Converts the imgae to grayscale, simplifying the data for edge detection.  
+**- Apply Gaussian Blur**  
+blur = cv.GaussianBlur(gray, (5,5), cv.BORDER_DEFAULT)  
+cv.imshow('Blur', blur)  
+Reduces noise and softens edges to improve edge detection results.  
+**- Detect Edges (Canny)**  
+canny = cv.Canny(blur, 125, 175)  
+cv.imshow('Canny Edges', canny)  
+Detects edges using gradient thresholds (125, 175). Produces a binary image (white deges, black background).  
+**- Find and Draw Contours**  
+contours, hierarchies = cv.findContours(canny, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE)  
+print(f'{len(contours)} contours, -1, (0, 0, 255), 1)  
+cv.imshow('Contours Drawn', blank)  
+cv.waitKey(0)  
+Finds all contours in the image, prints the total count, and draws them in red on the blank canvas.  
+
+### 3. Learned Functions  
+**- cv.Canny(src, threshold1, threshold2)**  
+Detects edges using intensity gradients. Produces a binary edge map.  
+**- cv.findContours(image, mode, method)**  
+Finds contours (object outlines) from a binary or edge-detected image.  
+- cv.RETR_LIST: retrieves all contours.
+- cv.CHAIN_APPROX_SIMPLE: compresses redundant points for efficiency.
+**- cv.drawContours(image, contours, contourldx, color, thickness)**
+Draws on or more contours on the image.
+- contourIdx = -1: draws all contours.
+- (0, 0, 255): red color (in BGR).
+**- np.zeros(shape, dtype)**
+Creates a blank image (filled with black) of the same size as the original.
+**- cv.cvtColor(src, flag)**
+Converts image color space, here used for BGR -> GRAY conversion.
+**- cv.GaussianBlur(src, ksize, borderType)**
+Applies Gaussian smoothing to reduce image noise.
+**- cv.waitKey(delay)**
+Waits for user input; 0 means infinite wait until a key is pressed.
+
+### 4. Common Issues & Fixes  
+**- Contours not visible:**  
+Ensure contours are drawn on a 3-channel (BGR) image, not a grayscale one.  
+**- Too many contours detected:**  
+Apply Gaussian Blur before Canny to remove small noisy edges.  
+**- Canny edges too weak or too strong:**  
+Adjust threshold values (125, 175) to find a balance.  
+**- Program window closes instantly:**  
+Always include cv.waitKey(0) at the end to keep windows open until a key is pressed.
+
+### 5. Notes & Insights  
+- cv.Canny() and cv.threshold() can both generate binary images suitable for contour detection.
+- Using a blank canvas (np.zeros) to draw contours make visualization clearer and isolates the result.
+
+### 6. Added Interactive Feature (Structural Improvements)  
+**- Stepwise Code Structure:**  
+The script was reorganized into numbered sections [1], [2], [3], etc., for readability and consistent documentation.
+**- Debug Information:**
+Added print(f'{len(contours)} contour(s) found!') to provide immediate feedback on detection results.  
+**- Alternative Method (Commented):**  
+Included thresholding (cv.threshold) as a secondary contour detection method for comparison.  
+**- Blank Canvas Visualization:**  
+Introduced a new blank image to isolate contours visually from the original image background.
+**- Improved Commenting Style:**  
+Matched section-based structure from previous scripts (read.py, basic_functions.py) for consistency.
