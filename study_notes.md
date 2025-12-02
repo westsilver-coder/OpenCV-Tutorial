@@ -127,8 +127,8 @@ Key	Action
   -------------------
 
 **File: contours.py**  
-** Date: 2025-11-11**  
-** Topic: Detecting and Visualizing Contours in OpenCV**  
+**Date: 2025-11-11**  
+**Topic: Detecting and Visualizing Contours in OpenCV**  
 
 ### 1. Overview  
 This script demonstrates how to detect and visualize object contours using OpenCV. Contours represent continuous curves that connect points with the same intensity, making them useful for shape detection, segmentation, and boundary analysis.  
@@ -169,17 +169,17 @@ Detects edges using intensity gradients. Produces a binary edge map.
 **- cv.findContours(image, mode, method)**  
 Finds contours (object outlines) from a binary or edge-detected image.  
 - cv.RETR_LIST: retrieves all contours.
-- cv.CHAIN_APPROX_SIMPLE: compresses redundant points for efficiency.
+- cv.CHAIN_APPROX_SIMPLE: compresses redundant points for efficiency.  
 **- cv.drawContours(image, contours, contourldx, color, thickness)**
-Draws on or more contours on the image.
-- contourIdx = -1: draws all contours.
-- (0, 0, 255): red color (in BGR).
+Draws on or more contours on the image.  
+- contourIdx = -1: draws all contours.  
+- (0, 0, 255): red color (in BGR).  
 **- np.zeros(shape, dtype)**
-Creates a blank image (filled with black) of the same size as the original.
+Creates a blank image (filled with black) of the same size as the original.  
 **- cv.cvtColor(src, flag)**
-Converts image color space, here used for BGR -> GRAY conversion.
+Converts image color space, here used for BGR -> GRAY conversion.  
 **- cv.GaussianBlur(src, ksize, borderType)**
-Applies Gaussian smoothing to reduce image noise.
+Applies Gaussian smoothing to reduce image noise.  
 **- cv.waitKey(delay)**
 Waits for user input; 0 means infinite wait until a key is pressed.
 
