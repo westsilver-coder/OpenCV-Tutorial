@@ -171,7 +171,7 @@ Detects edges using intensity gradients. Produces a binary edge map.
 Finds contours (object outlines) from a binary or edge-detected image.  
 - cv.RETR_LIST: retrieves all contours.
 - cv.CHAIN_APPROX_SIMPLE: compresses redundant points for efficiency.
-- 
+ 
 **- cv.drawContours(image, contours, contourldx, color, thickness)**
 Draws on or more contours on the image.  
 - contourIdx = -1: draws all contours.  
