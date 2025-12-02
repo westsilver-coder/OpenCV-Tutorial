@@ -166,20 +166,26 @@ Finds all contours in the image, prints the total count, and draws them in red o
 ### 3. Learned Functions  
 **- cv.Canny(src, threshold1, threshold2)**  
 Detects edges using intensity gradients. Produces a binary edge map.  
+
 **- cv.findContours(image, mode, method)**  
 Finds contours (object outlines) from a binary or edge-detected image.  
 - cv.RETR_LIST: retrieves all contours.
 - cv.CHAIN_APPROX_SIMPLE: compresses redundant points for efficiency.
+- 
 **- cv.drawContours(image, contours, contourldx, color, thickness)**
 Draws on or more contours on the image.  
 - contourIdx = -1: draws all contours.  
-- (0, 0, 255): red color (in BGR).  
+- (0, 0, 255): red color (in BGR).
+
 **- np.zeros(shape, dtype)**
 Creates a blank image (filled with black) of the same size as the original.  
+
 **- cv.cvtColor(src, flag)**
 Converts image color space, here used for BGR -> GRAY conversion.  
+
 **- cv.GaussianBlur(src, ksize, borderType)**
 Applies Gaussian smoothing to reduce image noise.  
+
 **- cv.waitKey(delay)**
 Waits for user input; 0 means infinite wait until a key is pressed.
 
