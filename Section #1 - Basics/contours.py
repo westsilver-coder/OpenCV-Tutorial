@@ -78,3 +78,14 @@ while True:
         break
 
 cv.destroyAllWindows()
+
+
+# ===============================================
+# Changes from Original Version
+# ===============================================
+# (1) Added clear step-by-step section comments for readability.
+# (2) Explained each processing stage (Gray, Blur, Canny, Contours).
+# (3) Added a blank canvas to visualize contour drawing separately.
+# (4) Added print output to show number of detected contours.
+# (5) Provided commented thresholding alternative for comparison.
+# (6) Maintained cv.waitKey(0) for final window display and control.
