@@ -214,3 +214,297 @@ Included thresholding (cv.threshold) as a secondary contour detection method for
 Introduced a new blank image to isolate contours visually from the original image background.
 **- Improved Commenting Style:**  
 Matched section-based structure from previous scripts (read.py, basic_functions.py) for consistency.
+
+---------------
+
+**File: draw_revised.py**  
+**Date: 2025-12-05**  
+**Topic: Custom Backgrounds, Ellipses, Symmetric Lines, and Centered Text in OpenCV**
+
+### 1. Overview  
+This script is an extened version of the original **draw.py** file from OpenCV drawing basics. While the original demonstrated simple primitives such as rectangles, circles, lines, and text on a blank canvas, this reviesd version creates a complete mint-choco themed graphic layout using geometric reasoning and custom color palettes.
+
+New features include:
+- A mint-choco checkered background  
+- A centered white ellipse with a black outline  
+- Symmetric decorative **thin-thick-thin** horizontal line patterns above and below the ellipse  
+- Perfectly centered text inside the ellipse  
+- Use of geometric calculations to ensure symmetry and proportional spacing  
+
+This script showcases how OpenCV can be used not only for computer vision tasks, but also for graphic design, UI mockups, and visual composition.
+
+### 2. Code Summary  
+- **Create a blank canvas**  
+`blank = np.zeros((500, 500, 3), dtype = 'uint8')`
+
+- **Define mint-choco colors**
+```
+mint = (209, 240, 170)  
+choco = (55, 78, 111)  
+```
+
+- **Generate checkered pattern**
+ Uses tile logic:  
+  ```  
+  for y in range(0, height, tile):  
+      for x in range(0, width, tile):  
+          if ((x // tile + y // tile) % 2 == 0):  
+              blank[y:y+tile, x:x+tile] = mint  
+          else:  
+              blank[y:y+tile, x:x+tile] = choco  
+  ```
+- **Draw white ellipse + black border**  
+  ```  
+  cv.ellipse(blank, center, axes, 0, 0, 360, (255,255,255), -1)  
+  cv.ellipse(blank, center, axes, 0, 0, 360, (0,0,0), 4)  
+  ```  
+
+- **Compute vertical geometry**  
+  ```  
+  ellipse_top = cy - ry  
+  ellipse_bottom = cy + ry  
+  y_mid_top = ellipse_top // 2  
+  y_mid_bottom = (ellipse_bottom + height) // 2  
+  ```  
+
+- **Draw symmetric thin–thick–thin lines**  
+  ```  
+  cv.line(blank, (0, y1), (width, y1), (255,255,255), thin)  
+  cv.line(blank, (0, y2), (width, y2), (255,255,255), thick)  
+  cv.line(blank, (0, y3), (width, y3), (255,255,255), thin)  
+  ```
+
+- **Center text inside ellipse**  
+  ```  
+  (text_w, text_h), baseline = cv.getTextSize  (text, font, scale, thickness)  
+  text_x = cx - text_w // 2  
+  text_y = cy + text_h // 2  
+  ```
+
+- **Display final result**  
+  `cv.imshow('Mint Choco Output', blank)`
+
+### 3. Learned Functions
+
+- `np.zeros(shape, dtype)`    
+  Creates a blank BGR image.
+
+- `cv.ellipse(image, center, axes, angle, startAngle, endAngle, color, thickness)`    
+  Draws both filled and bordered ellipses.
+
+- `cv.line(image, pt1, pt2, color, thickness)`    
+  Draws straight segments between two points.
+
+- `cv.getTextSize(text, fontFace, fontScale, thickness)`    
+  Finds width and height of text → used for perfect centering.
+
+- `cv.putText(image, text, org, fontFace, fontScale, color, thickness)`  
+  Renders text onto the canvas.
+
+- **Geometric spacing and alignment**  
+  - Computing ellipse top/bottom  
+  - Computing vertical midpoints  
+  - Building symmetric layouts  
+
+### 4. Common Issues & Fixes
+
+- **Lines appear misaligned**  
+  Fix: verify midpoint calculations (ellipse_top, ellipse_bottom).
+
+- **Ellipse looks distorted**  
+  Ensure axes = (horizontal_radius, vertical_radius).
+
+- **Colors look incorrect**  
+  Remember OpenCV uses **BGR**, not RGB.
+
+- **Text not centered**  
+  Must use `getTextSize()` to compute proper placement.
+
+### 5. Notes & Insights
+- Alternating tile patterns allow easy checkered backgrounds.  
+- Ellipses with borders require two draw calls: one filled, one outlined.  
+- Geometric formulas are essential for clean visual layout design.  
+- The thin–thick–thin decorative pattern demonstrates how OpenCV can mimic poster/graphic design elements.  
+- Centering text is not automatic; manual measurements are required.
+
+### 6. Added Features (Compared to original draw.py)
+
+- **Mint–choco checkered background** (replaces plain black)  
+- **Ellipse instead of simple rectangle/circle**  
+- **Symmetric decorative separators**    
+- **Mathematically centered text**  
+- **Color palette design using BGR**  
+- **Modular layout calculations (ellipse_top, y_mid_top, etc.)**  
+- Overall structure is more design-focused than primitive-focused
+
+--------
+
+**File: thresh.py**  
+**Date: 2025-12-05**  
+**Topic: Simple Thresholding & Adaptive Thresholding in OpenCV**
+
+### 1. Overview
+This script demonstrates two major thresholding techniques in OpenCV:
+
+1. **Simple Thresholding** – applies one global threshold value to the entire image.  
+2. **Adaptive Thresholding** – calculates a different threshold for each pixel based on local neighborhood intensity.
+
+The program loads an image of cats, converts it to grayscale, and applies various binary segmentation methods to compare how each approach behaves under different lighting conditions.
+
+### 2. Code Summary  
+- **Load Image and Convert to Grayscale**  
+  ```  
+  img = cv.imread('../Resources/Photos/cats.jpg')  
+  gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)  
+  ```  
+
+- **Simple Thresholding (Binary)**  
+  ```  
+  threshold, thresh = cv.threshold(gray, 150, 255, cv.THRESH_BINARY)  
+  ```  
+
+- **Simple Thresholding (Inverse)**  
+  ```  
+  threshold, thresh_inv = cv.threshold(gray, 150, 255, cv.THRESH_BINARY_INV)  
+  ```
+
+- **Adaptive Thresholding (Gaussian Method)**  
+  ```  
+  adaptive_thresh = cv.adaptiveThreshold(  
+      gray,  
+      255,  
+      cv.ADAPTIVE_THRESH_GAUSSIAN_C,  
+      cv.THRESH_BINARY_INV,  
+      11,  
+      9  
+  )  
+  ```
+
+- **Display Results**  
+  ```  
+  cv.imshow('Simple Thresholded', thresh)  
+  cv.imshow('Simple Thresholded Inverse',   thresh_inv)  
+  cv.imshow('Adaptive Thresholding',   adaptive_thresh)  
+  ```
+### 3. Learned Functions
+
+- **cv.threshold(src, thresh, maxVal, type)**  
+  Performs global thresholding. Returns `(actual_threshold_used, output_image)`.
+
+- **cv.adaptiveThreshold(src, maxVal, adaptiveMethod, thresholdType, blockSize, C)**  
+  Computes a threshold for each pixel based on the weighted sum of neighboring pixels.
+
+### 4. Notes & Insights
+
+- Simple thresholding is fast but sensitive to lighting differences.  
+- Adaptive thresholding is far more robust when brightness varies across the image.  
+- The parameters `blockSize` and `C` significantly affect segmentation quality.  
+- Using grayscale is required for thresholding because the operation depends on pixel intensity values.
+
+--------
+
+**File: transformations.py**  
+**Date: 2025-12-06**  
+**Topic: Interactive Image Transformations (Translations, Rotation, Resize, Flip, Crop)**
+
+### 1. Overview
+This script demonstrates several fundamental geometric transformations using OpenCV in an interactive format.  
+Instead of executing all operations sequentially, the program waits for user input and performs transformations based on keyboard commands.
+
+The supported operations include:  
+- Translation   
+- Rotation (user-defined angle)  
+- Resize (square, user-defined size)  
+- Flip (mode 0, 1, -1)  
+- Crop  
+
+Each transformation is displayed in a separate result window, and pressing any non-assigned key exits the program.
+
+### 2. Code Summary
+
+- **Load Original Image**  
+  ```  
+  img = cv.imread('../Resources/Photos/park.jpg')  
+  cv.imshow('Original', img)  
+  ```
+
+- **Translation**  
+  ```  
+  transMat = np.float32([[1,0,x],[0,1,y]])  
+  cv.warpAffine(img, transMat, dimensions)  
+  ```
+  Moves the image horizontally and vertically using an affine transformation matrix.
+
+- **Rotation**  
+  ```  
+  rotMat = cv.getRotationMatrix2D(rotPoint, angle, 1.0)  
+  cv.warpAffine(img, rotMat, dimensions)  
+  ```  
+  Rotates the image around the given rotation point (default: image center).
+
+- **Resize (Square)**  
+  ```  
+  cv.resize(img, (size, size), interpolation=cv.INTER_CUBIC)    
+  ```  
+  Resizes the image to a user-defined square dimension.
+
+- **Flip**  
+  ```  
+  cv.flip(img, mode)  
+  ```  
+  Performs vertical (0), horizontal (1), or both (-1) flipping.
+
+- **Crop**  
+  ```  
+  cropped = img[200:400, 300:400]  
+  ```  
+  Extracts a manually defined rectangular region from the image.
+
+- **Interactive Loop**  
+  ```   
+  key = cv.waitKey(0)  
+  ```  
+  - T → translation    
+  - R → rotation      
+  - S → resize    
+  - F → flip    
+  - C → crop    
+  - Other keys → exit    
+
+- **Close All Windows**  
+  ```  
+  cv.destroyAllWindows()
+  ```
+
+### 3. Learned Functions
+
+- **cv.warpAffine(src, M, dsize)**  
+  Applies a 2×3 affine transformation matrix to the image.
+
+- **cv.getRotationMatrix2D(center, angle, scale)**  
+  Generates a rotation matrix for 2D rotation.
+
+- **cv.resize(src, dsize, interpolation)**  
+  Resizes the image with several interpolation options;  
+  `INTER_CUBIC` provides high-quality enlargement.
+
+- **cv.flip(src, flipCode)**  
+  Flips the image:   
+  - 0 → vertical  
+  - 1 → horizontal  
+  - -1 → both axes  
+
+- **Numpy slicing for cropping**  
+  Used to extract specific regions of the image.
+
+- **cv.waitKey(delay)**  
+  Waits for key input and enables interactive execution.
+
+---
+
+### 4. Notes & Insights  
+- Affine transformations (translation, rotation) rely on matrix multiplication, handled internally by `cv.warpAffine`.    
+- Using user input allows flexible control over transformation behavior.  
+- Limiting flip mode to 0, 1, -1 preserves OpenCV’s expected parameters and avoids errors.  
+- Resizing to a square dimension simplifies user input.  
+- The interactive structure is useful for experimenting with image transformations in real time.
