@@ -508,3 +508,135 @@ Each transformation is displayed in a separate result window, and pressing any n
 - Limiting flip mode to 0, 1, -1 preserves OpenCV’s expected parameters and avoids errors.  
 - Resizing to a square dimension simplifies user input.  
 - The interactive structure is useful for experimenting with image transformations in real time.
+
+----------
+
+## Section #2 - Advanced  
+
+**File: bitwise.py**  
+**Date: 2025-12-07**  
+**Topic: Boolean Shape Operations (AND, OR, XOR, NOT) with Interactive Selection**
+
+### 1. Overview
+This script demonstrates how to construct basic geometric shapes in OpenCV (triangle, rectangle, circle), convert them into binary masks, and apply Boolean operations (AND, OR, XOR, NOT).  
+The program is interactive: the user selects shapes and operations through console input, and each result is displayed in a separate OpenCV window.
+
+Boolean mask logic is used rather than color-based operations, ensuring consistent behavior across different shapes and colors.
+
+Supported operations:  
+- AND (intersection)  
+- OR (union)  
+- XOR (exclusive regions)  
+- NOT (color complement of a single shape)
+
+Each result is recolored according to predefined rules (white, yellow, black, complement), and any key press inside the image window closes the current display.
+
+---
+
+### 2. Code Summary
+
+- **Create Blank Canvas**  
+```python  
+img = np.zeros((500, 500, 3), dtype='uint8')  
+```  
+Generates a black background on which shapes are drawn.
+
+- **Draw Triangle**  
+```python  
+pts = np.array([[250, 50], [50, 400], [450, 400]], np.int32)  
+cv.fillPoly(img, [pts], (0, 0, 255))  
+```  
+Creates a filled red triangle.
+
+- **Draw Rectangle**  
+```python  
+cv.rectangle(img, (80,80), (420,420), (255,0,0), -1)  
+```  
+Draws a filled blue square.  
+
+- **Draw Circle**  
+```python  
+cv.circle(img, (250,250), 170, (0, 255, 0), -1)  
+```  
+Draws a filled green circle.
+
+- **Grayscale Mask Conversion**  
+```python  
+gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)  
+mask = cv.threshold(gray, 1, 255, cv.THRESH_BINARY)  
+```  
+Converts a colored shape to a binary mask (0 or 255), which is required for correct Boolean operations.
+
+- **Boolean Operations Using Masks**  
+```python  
+cv.bitwise_and(mask1, mask2)  
+cv.bitwise_or(mask1, mask2)  
+cv.bitwise_xor(mask1, mask2)  
+```  
+OpenCV performs logic at the pixel level using 1-channel masks.
+
+- **Coloring Boolean Results**  
+```python  
+out[mask == 255] = (255, 255, 255) # AND (white)  
+out[mask == 255] = (0, 255, 255) # OR (yellow)  
+out[mask == 255] = (0, 0, 0) # XOR (black)  
+```  
+Colors are applied after the Boolean mask is obtained.
+
+- **Color Complement for NOT**  
+```python  
+result = 255 - img  
+```  
+Produces the color-inverted version of the selected shape.
+
+- **Display Loop**  
+```python  
+cv.imshow("Result", img)  
+cv.waitKey(0)  
+cv.destroyAllWindows()  
+```  
+Each result waits for a key press inside the GUI window before closing.
+
+### 3. Learned Functions  
+- **cv.fillPoly(img, pts, color)**  
+Draws filled polygons such as triangles using an array of vertex points.
+
+- **Binary Mask Generation (Critical for Boolean Ops)**  
+```python  
+gray = cv.cvtColor(...)  
+cv.threshold(...)  
+```  
+Ensures reliable AND/OR/XOR behavior by reducing all color channels into a single binary mask.
+
+- **cv.bitwise_* functions (AND, OR, XOR)**  
+Operate correctly only on 1-channel binary masks when performing pure geometric Boolean operations.
+
+- **Custom Color Maping After Masking**  
+```python  
+out[mask == 255] = desired_color  
+```  
+Allows complete control over how Boolean regions are visualized.
+
+- **Color Complement Operation**  
+```python  
+255-img  
+```  
+Simple and fast method to produce negative/inverted images.
+
+- **Interactive Console + OpenCV GUI Workflow**  
+Learned how to:  
+- accept user console input    
+- display results in OpenCV windows    
+- avoid `input()` freezing OpenCV GUI by using `cv.waitKey()`  
+
+### 4. Notes & Insights
+- Boolean geometry works **only with binary masks**, not with multi-channel (BGR) images.  
+- XOR becomes invisible (all black) if the output color for XOR regions is also black; visibility depends entirely on color mapping.  
+- `cv.waitKey(0)` must handle all GUI pauses—mixing it with `input()` freezes windows.  
+- Interaction design matters: shape selection → operation selection → per-window display creates a smooth workflow.  
+- Separating:  
+- shape creation (color)  
+- mask extraction  
+- Boolean combination  
+- visualization  
+makes the transformation pipeline clean and extendable.
